@@ -1,9 +1,9 @@
 
 #CONSTANTS
 TIC_TAC_TOE_BOARD_SIZE = 3
-EMPTY_BOARD_SQUARE = "|___|"
-MARK_PLAYER_1 = "|_X_|"
-MARK_PLAYER_2 = "|_O_|"
+EMPTY_BOARD_SQUARE = 0
+MARK_PLAYER_1 = 1
+MARK_PLAYER_2 = 2
 INVALID_MOVE = "Invalid move, try again"
  
 
@@ -49,9 +49,42 @@ class TicTacToeBoard
  		return true if @board_matrix[row][column]== EMPTY_BOARD_SQUARE
   end  		 
 
-end
+
+	def is_there_a_winner_in_game?()
+		if()
+		else
+		end
+	end
+
+	def is_there_winner_move_in_rows?(player_turn)
+		counter_row_marks_player = 0
+		for row_board in (0..2)
+			for column_board in (0..2)
+				if @board_matrix[row_board][column_board]== player_turn
+					counter_row_marks_player+=1
+					is_there_winner?(counter_row_marks_player)				
+				end							
+			end
+			counter_row_marks_player = 0
+		end
+	end
+
+	
+	def is_there_winner_move_in_columns?
+	end
+
+  def is_ther_winner_move_in_diagonal?
+	end
 
 
+	def is_there_winner?(counter_winner_marks)
+		if counter_winner_marks == TIC_TAC_TOE_BOARD_SIZE
+			true
+			break
+		else
+			false
+		end
+	end
  
 
 
