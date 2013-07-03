@@ -1,9 +1,10 @@
 
 #CONSTANTS
 TIC_TAC_TOE_BOARD_SIZE = 3
-EMPTY_BOARD_SQUARE = 0
-MARK_PLAYER_1 = 1
-MARK_PLAYER_2 = 2
+WINNER_AMOUNT = 3
+BOARD_EMPTY_SQUARE = "|___|"
+MARK_PLAYER_1 = "|_X_|"
+MARK_PLAYER_2 = "|_O_|"
 INVALID_MOVE = "Invalid move, try again"
  
 
@@ -12,13 +13,13 @@ class TicTacToeBoard
  attr_accessor :board_matrix
 
  def initialize
-   @board_matrix = [[EMPTY_BOARD_SQUARE,EMPTY_BOARD_SQUARE,EMPTY_BOARD_SQUARE],
-	 	    						[EMPTY_BOARD_SQUARE,EMPTY_BOARD_SQUARE,EMPTY_BOARD_SQUARE],
-		    						[EMPTY_BOARD_SQUARE,EMPTY_BOARD_SQUARE,EMPTY_BOARD_SQUARE]]
+   @board_matrix = [[BOARD_EMPTY_SQUARE,BOARD_EMPTY_SQUARE,BOARD_EMPTY_SQUARE],
+	 	    						[BOARD_EMPTY_SQUARE,BOARD_EMPTY_SQUARE,BOARD_EMPTY_SQUARE],
+		    						[BOARD_EMPTY_SQUARE,BOARD_EMPTY_SQUARE,BOARD_EMPTY_SQUARE]]
  end
 
 
- 	def make_move(row, column,player_turn)
+ 	def make_move(row, column, player_turn)
    	if player_turn == 1
 			@board_matrix[row][column]= MARK_PLAYER_1
 		else 
@@ -28,11 +29,12 @@ class TicTacToeBoard
 
 
 	def is_move_ok?(row, column)
-  	if is_not_move_out_of_bound?(row, column) and is_square_empty(row, column)
+  	if is_not_move_out_of_bound?(row, column) and is_square_empty?(row, column)
 			true
  		else
 			false
-	end 
+		end 
+	end
 
 
  	def is_not_move_out_of_bound?(row, column)
@@ -46,75 +48,87 @@ class TicTacToeBoard
 
 
  	def is_square_empty?(row,column)
- 		return true if @board_matrix[row][column]== EMPTY_BOARD_SQUARE
+ 		return true if @board_matrix[row][column]== BOARD_EMPTY_SQUARE
   end  		 
 
 
-	def is_there_a_winner_in_game?()
-		if()
-		else
-		end
-	end
-
-	def is_there_winner_move_in_rows?(player_turn)
-		counter_row_marks_player = 0
-		for row_board in (0..2)
-			for column_board in (0..2)
-				if @board_matrix[row_board][column_board]== player_turn
-					counter_row_marks_player+=1
-					is_there_winner?(counter_row_marks_player)				
-				end							
-			end
-			counter_row_marks_player = 0
-		end
-	end
-
-	
-	def is_there_winner_move_in_columns?
-	end
-
-  def is_ther_winner_move_in_diagonal?
-	end
-
-
-	def is_there_winner?(counter_winner_marks)
-		if counter_winner_marks == TIC_TAC_TOE_BOARD_SIZE
+	def is_there_a_winner_in_game?(row, column, current_player_turn)
+		current_player_mark = set_current_player_mark(current_player_turn)
+		if is_there_winner_move_in_row?(row, current_player_mark)        == true ||
+       is_there_winner_move_in_column?(column, current_player_mark)  == true ||
+       is_there_winner_move_in_diagonal?(current_player_mark)        == true ||
+			 is_there_winner_move_in_inverse_diagonal?(current_player_mark) == true  
 			true
-			break
 		else
 			false
 		end
 	end
- 
 
 
+	def set_current_player_mark(current_player_turn)
+		if current_player_turn == 1
+			current_player_mark = MARK_PLAYER_1
+		else
+			current_player_mark = MARK_PLAYER_2
+		end
+		return current_player_mark
+	end
 
 
+	def is_there_winner_move_in_row?(row, current_player_mark)
+		counter_row_marks = 0
+		for column_board in (0..2)
+				if @board_matrix[row][column_board]== current_player_mark
+					counter_row_marks +=1
+					winner_value = is_there_a_winner?(counter_row_marks)				
+				end							
+		end
+		return winner_value
+	end
+
+	
+	def is_there_winner_move_in_column?(column,current_player_mark)
+		column_marks_counter = 0
+		for row_board in (0..2)
+			if @board_matrix[row_board][column] == current_player_mark
+				column_marks_counter +=1
+				winner_value = is_there_a_winner?(column_marks_counter)
+			end
+		end
+		return winner_value
+	end
 
 
+  def is_there_winner_move_in_diagonal?(current_player_mark)
+		diagonal_marks_counter = 0
+		for diagonal_board in (0..2)
+			if @board_matrix[diagonal_board][diagonal_board] == current_player_mark	
+				diagonal_marks_counter +=1
+				winner_value = is_there_a_winner?(diagonal_marks_counter)
+			end
+		end		
+		return winner_value
+	end
 
 
+	def is_there_winner_move_in_inverse_diagonal?(current_player_mark)
+		inverse_diagonal_marks_counter = 0
+		row_counter = 0 
+		column_counter = 2
+		while row_counter < 3 do	
+			if @board_matrix[row_counter][column_counter] == current_player_mark 
+				inverse_diagonal_marks_counter +=1
+				winner_value = is_there_a_winner?(inverse_diagonal_marks_counter)
+			end
+			row_counter +=1
+			column_counter -=1
+		end
+		return winner_value	
+	end
 
 
+	def is_there_a_winner?(counter_winner_marks)
+		return true if counter_winner_marks == WINNER_AMOUNT
+	end
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+end

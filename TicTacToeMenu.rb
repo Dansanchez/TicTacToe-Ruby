@@ -19,28 +19,43 @@ class TicTacToeMenu
  	end
 
 
- 	def  get_row_keyboard_data
-   	row = gets.chomp
+ 	def  get_keyboard_data
+   	keyboard_data = gets.chomp
  	end
 
- 	def  get_column_keyboard_data
-   	row = gets.chomp
- 	end
-
-	def prueba(fil,col)
-		@tic_tac_toe_board.make_move_player_1(fil,col)
+	def make_move(fil,col,turn)
+		@tic_tac_toe_board.make_move(fil,col,turn)
 	end
 
+  def is_move_ok?(fil,col)
+		@tic_tac_toe_board.is_move_ok?(fil,col)
+	end
+
+	def ganador(row,col,turn)
+		@tic_tac_toe_board.is_there_a_winner_in_game?(row,col,turn)
+	end
 end
 
 
-menu = TicTacToeMenu.new
-menu.print_board_matrix
-menu.prueba(menu.get_row_keyboard_data.to_i,menu.get_column_keyboard_data.to_i)
-
-menu.print_board_matrix
-
-
-
-
+	menu = TicTacToeMenu.new
+	menu.print_board_matrix
+	player_turn = 1
+	while true do
+		row = menu.get_keyboard_data.to_i
+		column = menu.get_keyboard_data.to_i
+		if menu.is_move_ok?(row,column) == true
+			menu.make_move(row,column,player_turn)
+			if menu.ganador(row,column,player_turn) == true
+				puts "juego terminado"				
+				break
+			end
+		end
+		if player_turn == 1
+			player_turn +=1
+		else
+			player_turn -=1
+		end
+		menu.print_board_matrix
+	end
+ 
 
