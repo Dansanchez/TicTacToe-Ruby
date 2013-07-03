@@ -10,17 +10,19 @@ INVALID_MOVE = "Invalid move, try again"
 
 class TicTacToeBoard
 
- attr_accessor :board_matrix
+ attr_accessor :board_matrix,:current_player_turn
 
- def initialize
-   @board_matrix = [[BOARD_EMPTY_SQUARE,BOARD_EMPTY_SQUARE,BOARD_EMPTY_SQUARE],
+	def initialize
+  	@board_matrix = [[BOARD_EMPTY_SQUARE,BOARD_EMPTY_SQUARE,BOARD_EMPTY_SQUARE],
 	 	    						[BOARD_EMPTY_SQUARE,BOARD_EMPTY_SQUARE,BOARD_EMPTY_SQUARE],
 		    						[BOARD_EMPTY_SQUARE,BOARD_EMPTY_SQUARE,BOARD_EMPTY_SQUARE]]
- end
+ 		@current_player_turn = 1
+		@current_player_mark = MARK_PLAYER_1 
+	end
 
 
- 	def make_move(row, column, player_turn)
-   	if player_turn == 1
+ 	def make_move(row, column)
+   	if @current_player_turn == 1
 			@board_matrix[row][column]= MARK_PLAYER_1
 		else 
 			@board_matrix[row][column]= MARK_PLAYER_2
@@ -28,22 +30,23 @@ class TicTacToeBoard
  	end
 
 
+	def change_current_player_turn
+		if @current_player_turn == 1
+			@current_player_turn = 2
+		else
+			@current_player_turn = 1
+		end 	
+	end
+
+
 	def is_move_ok?(row, column)
-  	if is_not_move_out_of_bound?(row, column) and is_square_empty?(row, column)
-			true
- 		else
-			false
-		end 
+ 		is_not_move_out_of_bound?(row, column) and is_square_empty?(row, column) 
 	end
 
 
  	def is_not_move_out_of_bound?(row, column)
-  	if row    < TIC_TAC_TOE_BOARD_SIZE and row    >= 0 and
-       column < TIC_TAC_TOE_BOARD_SIZE and column >= 0
-			 true		
-		else
-       false
- 	  end
+  	return true	if row    < TIC_TAC_TOE_BOARD_SIZE and row    >= 0 and
+       						 column < TIC_TAC_TOE_BOARD_SIZE and column >= 0
 	end
 
 
@@ -52,26 +55,20 @@ class TicTacToeBoard
   end  		 
 
 
-	def is_there_a_winner_in_game?(row, column, current_player_turn)
-		current_player_mark = set_current_player_mark(current_player_turn)
-		if is_there_winner_move_in_row?(row, current_player_mark)        == true ||
-       is_there_winner_move_in_column?(column, current_player_mark)  == true ||
-       is_there_winner_move_in_diagonal?(current_player_mark)        == true ||
-			 is_there_winner_move_in_inverse_diagonal?(current_player_mark) == true  
-			true
-		else
-			false
-		end
+	def is_there_a_winner_in_game?(row, column)
+		is_there_winner_move_in_row?(row, @current_player_mark)         ||
+ 	  is_there_winner_move_in_column?(column, @current_player_mark)   ||
+    is_there_winner_move_in_diagonal?(@current_player_mark)         ||
+		is_there_winner_move_in_inverse_diagonal?(@current_player_mark)   	
 	end
 
 
-	def set_current_player_mark(current_player_turn)
-		if current_player_turn == 1
-			current_player_mark = MARK_PLAYER_1
+	def set_current_player_mark
+		if @current_player_turn == 1
+			@current_player_mark = MARK_PLAYER_1
 		else
-			current_player_mark = MARK_PLAYER_2
+			@current_player_mark = MARK_PLAYER_2
 		end
-		return current_player_mark
 	end
 
 
