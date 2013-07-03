@@ -23,9 +23,9 @@ class TicTacToeBoard
 
  	def make_move(row, column)
    	if @current_player_turn == 1
-			@board_matrix[row][column]= MARK_PLAYER_1
+			@board_matrix[row-1][column-1]= MARK_PLAYER_1
 		else 
-			@board_matrix[row][column]= MARK_PLAYER_2
+			@board_matrix[row-1][column-1]= MARK_PLAYER_2
 		end
  	end
 
@@ -45,13 +45,13 @@ class TicTacToeBoard
 
 
  	def is_not_move_out_of_bound?(row, column)
-  	return true	if row    < TIC_TAC_TOE_BOARD_SIZE and row    >= 0 and
-       						 column < TIC_TAC_TOE_BOARD_SIZE and column >= 0
+  	return true	if row    <= TIC_TAC_TOE_BOARD_SIZE and row    > 0 and
+       						 column <= TIC_TAC_TOE_BOARD_SIZE and column > 0
 	end
 
 
  	def is_square_empty?(row,column)
- 		return true if @board_matrix[row][column]== BOARD_EMPTY_SQUARE
+ 		return true if @board_matrix[row-1][column-1]== BOARD_EMPTY_SQUARE
   end  		 
 
 
@@ -75,7 +75,7 @@ class TicTacToeBoard
 	def is_there_winner_move_in_row?(row, current_player_mark)
 		counter_row_marks = 0
 		for column_board in (0..2)
-				if @board_matrix[row][column_board]== current_player_mark
+				if @board_matrix[row-1][column_board-1]== current_player_mark
 					counter_row_marks +=1
 					winner_value = is_there_a_winner?(counter_row_marks)				
 				end							
@@ -87,7 +87,7 @@ class TicTacToeBoard
 	def is_there_winner_move_in_column?(column,current_player_mark)
 		column_marks_counter = 0
 		for row_board in (0..2)
-			if @board_matrix[row_board][column] == current_player_mark
+			if @board_matrix[row_board-1][column-1] == current_player_mark
 				column_marks_counter +=1
 				winner_value = is_there_a_winner?(column_marks_counter)
 			end
@@ -99,7 +99,7 @@ class TicTacToeBoard
   def is_there_winner_move_in_diagonal?(current_player_mark)
 		diagonal_marks_counter = 0
 		for diagonal_board in (0..2)
-			if @board_matrix[diagonal_board][diagonal_board] == current_player_mark	
+			if @board_matrix[diagonal_board-1][diagonal_board-1] == current_player_mark	
 				diagonal_marks_counter +=1
 				winner_value = is_there_a_winner?(diagonal_marks_counter)
 			end
@@ -113,7 +113,7 @@ class TicTacToeBoard
 		row_counter = 0 
 		column_counter = 2
 		while row_counter < 3 do	
-			if @board_matrix[row_counter][column_counter] == current_player_mark 
+			if @board_matrix[row_counter-1][column_counter-1] == current_player_mark 
 				inverse_diagonal_marks_counter +=1
 				winner_value = is_there_a_winner?(inverse_diagonal_marks_counter)
 			end
