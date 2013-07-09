@@ -38,6 +38,13 @@ class TicTacToeBoard
 		end 	
 	end
 
+	def set_current_player_mark
+		if @current_player_turn == 1
+			@current_player_mark = MARK_PLAYER_1
+		else
+			@current_player_mark = MARK_PLAYER_2
+		end
+	end
 
 	def is_move_ok?(row, column)
  		is_not_move_out_of_bound?(row, column) and is_square_empty?(row, column) 
@@ -60,15 +67,6 @@ class TicTacToeBoard
  	  is_there_winner_move_in_column?(column, @current_player_mark)   ||
     is_there_winner_move_in_diagonal?(@current_player_mark)         ||
 		is_there_winner_move_in_inverse_diagonal?(@current_player_mark)   	
-	end
-
-
-	def set_current_player_mark
-		if @current_player_turn == 1
-			@current_player_mark = MARK_PLAYER_1
-		else
-			@current_player_mark = MARK_PLAYER_2
-		end
 	end
 
 
@@ -113,7 +111,7 @@ class TicTacToeBoard
 		row_counter = 0 
 		column_counter = 2
 		while row_counter < 3 do	
-			if @board_matrix[row_counter-1][column_counter-1] == current_player_mark 
+			if @board_matrix[row_counter][column_counter] == current_player_mark 
 				inverse_diagonal_marks_counter +=1
 				winner_value = is_there_a_winner?(inverse_diagonal_marks_counter)
 			end

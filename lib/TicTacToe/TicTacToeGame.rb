@@ -10,7 +10,7 @@ WARNING_MESSAGE_TRY_AGAIN = "\nInvalid move, try again"
 GAME_OVER_MESSAGE = "\nGame Over"
 
 
-class TicTacToeMenu
+class TicTacToeGame
 
 
  	def initialize
@@ -25,7 +25,7 @@ class TicTacToeMenu
 		puts PLAYER_1_MESSAGE
 		puts PLAYER_2_MESSAGE
 		puts INSTRUCTIONS_MESSAGE
-	end
+					end
  
  
  	def print_board_matrix
@@ -74,7 +74,7 @@ class TicTacToeMenu
 end
 
 
-	menu = TicTacToeMenu.new
+	menu = TicTacToeGame.new
 	menu.play_TicTacToe_game
 	
 	
